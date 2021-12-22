@@ -66,14 +66,19 @@ def playturn(player):
 
 
 def aiturn(player):
-    x, y = aiwin(tiles).split(",")
-    x, y = ailose(tiles).split(",")
-    x, y = airandom(tiles).split(",")
-    if tiles[x][y] == " ":
-        tiles[x][y] = playertosign(player)
+    try:
+        win = aiwin(tiles)
+        tiles[win[0]][win[1]] = playertosign(player)
         return True
-    else:
-        return False
+    except:
+        try:
+            lose = ailose(tiles)
+            tiles[lose[0]][lose[1]] = playertosign(player)
+            return True
+        except:
+            random = airandom(tiles)
+            tiles[random[0]][random[1]] = playertosign(player)
+            return True
 
 
 def playertosign(player):

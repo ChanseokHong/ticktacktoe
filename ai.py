@@ -19,7 +19,8 @@ def aiwin(tiles):
         else:
             k = 2
         if n == 2:
-            return (str(i), str(k))
+            if tiles[i][k] == " ":
+                return [i, k]
         i += 1
     while i < 3:
         n = 0
@@ -37,7 +38,8 @@ def aiwin(tiles):
         else:
             k = 2
         if n == 2:
-            return (str(k), str(i))
+            if tiles[k][i] == " ":
+                return [k, i]
         i += 1
 
     n = 0
@@ -55,7 +57,8 @@ def aiwin(tiles):
     else:
         k = 2
     if n == 2:
-        return (str(k), str(k))
+        if tiles[k][k] == " ":
+            return [k, k]
     n = 0
     k = 0
     if tiles[2][0] == "X":
@@ -71,8 +74,8 @@ def aiwin(tiles):
     else:
         k = 2
     if n == 2:
-        return (str(2-k), str(k))
-    return False
+        if tiles[2-k][k] == " ":
+         return [2-k, k]
 
 
 def ailose(tiles):
@@ -93,7 +96,8 @@ def ailose(tiles):
         else:
             k = 2
         if n == 2:
-            return (str(i), str(k))
+            if tiles[i][k] == " ":
+                return [i, k]
         i += 1
     while i < 3:
         n = 0
@@ -111,7 +115,8 @@ def ailose(tiles):
         else:
             k = 2
         if n == 2:
-            return (str(k), str(i))
+            if tiles[k][i] == " ":
+                return [k, i]
         i += 1
     n = 0
     k = 0
@@ -128,7 +133,8 @@ def ailose(tiles):
     else:
         k = 2
     if n == 2:
-        return (str(k), str(k))
+        if tiles[k][k] == " ":
+            return [k, k]
     n = 0
     k = 0
     if tiles[2][0] == "O":
@@ -144,14 +150,15 @@ def ailose(tiles):
     else:
         k = 2
     if n == 2:
-        return (str(2-k), str(k))
+        if tiles[2-k][k] == " ":
+            return [2-k, k]
 
 
 def airandom(tiles):
     var = [0, 1, 2]
-    x = ""
-    y = ""
-    while tiles[x][y] == "":
+    x = random.choice(var)
+    y = random.choice(var)
+    while not tiles[x][y] == " ":
         x = random.choice(var)
         y = random.choice(var)
-    return (str(x), str(y))
+    return [x,y]
