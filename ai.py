@@ -2,49 +2,94 @@ import random
 
 
 def basicai(tiles,player):
+    x = checkwin(tiles,"X")
+    o = checkwin(tiles,"O")
     if player == 0:
-        try:
-            return checkwin(tiles,"X")
-        except:
-            return checkwin(tiles,"O")
+        if o is not None:
+            return o
+        else:
+            return x
     else:
-        try:
-            return checkwin(tiles,"O")
-        except:
-            return checkwin(tiles,"X")
+        if x is not None:
+            return x
+        else:
+            return o
 
 def checkwin(tiles,symbol):
-    i = 0;n = 0;m = 0;j = 0;a = 0;b = 0;c1 = 0;c2 = 0;c3 = 0;c4 = 0
+    h = horcheck(tiles,symbol)
+    if h is not None:
+        return h
+    v = vercheck(tiles,symbol)
+    if v is not None:
+        return v
+    c = crosscheck(tiles,symbol)
+    if c is not None:
+        return c
+
+
+def horcheck(tiles,symbol):
+    i = 0
     while i < 3:
-        while j < 3:
-            if tiles[i][j] == symbol:
-                n += 1
-            else:
-                c1 = j
-            if tiles[j][i] == symbol:
-                m += 1
-            else:
-                c2 = j
-            j += 1
+        n = 0;a = -1
+        if tiles[i][0] == symbol:
+            n += 1
+        else:
+            a = 0
+        if tiles[i][1] == symbol:
+            n += 1
+        else:
+            a = 1
+        if tiles[i][2] == symbol:
+            n += 1
+        else:
+            a = 2
         if n == 2:
-            if tiles[i][c1] == " ":
-                return [i,c1]
-        if m == 2:
-            if tiles[c2][i] == " ":
-                return [c2,i]
-        if tile[i][i] == symbol:
+            if not a == -1:
+                if tiles[i][a] == " ":
+                    return [i,a]
+        i += 1
+
+def vercheck(tiles,symbol):
+    i = 0
+    while i < 3:
+        n = 0;a = -1
+        if tiles[0][i] == symbol:
+            n += 1
+        else:
+            a = 0
+        if tiles[1][i] == symbol:
+            n += 1
+        else:
+            a = 1
+        if tiles[2][i] == symbol:
+            n += 1
+        else:
+            a = 2
+        if n == 2:
+            if not a == -1:
+                if tiles[a][i] == " ":
+                    return [a,i]
+        i += 1
+
+
+def crosscheck(tiles,symbol):
+    i=0;a=0;b=0
+    while i < 3:
+        if tiles[i][i] == symbol:
             a += 1
         else:
-            c3 = i
-        if tile[2-i][i] == symbol:
+            c = i
+        if tiles[2-i][i] == symbol:
             b += 1
         else:
-            c4 = i
+            d = i
         i += 1
-        if a == 2:
-            return [c3,c3]
-        if b == 2:
-            return [2-c4,c4]
+    if a == 2:
+        if tiles[c][c] == " ":
+            return [c,c]
+    if b == 2:
+        if tiles[2-d][d] == " ":
+            return [2-d,d]
 
 
 def airandom(tiles):
