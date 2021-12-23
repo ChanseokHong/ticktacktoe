@@ -1,40 +1,27 @@
-# import pygame
-# import tkinter
 from exam import aexam
 from exam import bexam
 from exam import exam
-from ai import aiwin
-from ai import ailose
+from ai import basicai
 from ai import airandom
-# #delet after test
-# mode = 0
-#
-# monitor_height = root.winfo_screenheight()
-# monitor_width = root.winfo_screenwidth()
-#
-# screensize = (monitor_hight * 2) / 3
-#
-# pygame, init()
-# pygame.display.set_caption('Tick-Tack_Toe')
-# displaysurf = pygame.display.set_mode((screensize, screensize), 0, 32)\
+from ai import aihardstart
+from ai import aihardsec
+import os
+import time
 
 tiles = [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]
 
 
-def game():
-    turn = 0
-    awin = False
-    bwin = False
-    draw = False
+def game(pl1,pl2):
+    turn = 0;awin = False;bwin = False;draw = False
     while awin is False and bwin is False and draw is False:
         showinterface()
         value = False
         if turn % 2 == 0:
             while value is False:
-                value = playturn(1)
+                value = pl1.playTurn(1)
         else:
             while value is False:
-                value = aiturn(0)
+                value = pl2.playTurn(0)
         awin = aexam(tiles)
         bwin = bexam(tiles)
         draw = exam(tiles)
@@ -44,13 +31,13 @@ def game():
         if bwin is True:
             showinterface()
             print("O win!")
-        if draw is True:
+        if awin is False and bwin is False and draw is True:
             showinterface()
             print("Draw")
         turn += 1
 
 
-def playturn(player):
+def humanplayturn(player):
     print(playertosign(player) + " turn")
     try:
         x, y = input().split(",")
@@ -64,30 +51,50 @@ def playturn(player):
     else:
         return False
 
+def aieasyturn(player):
+    time.sleep(1)
+    random = airandom(tiles)
+    tiles[random[0]][random[1]] = playertosign(player)
+    return True
 
-def aiturn(player):
+def ainormalturn(player):
+    time.sleep(1)
     try:
-        win = aiwin(tiles)
-        tiles[win[0]][win[1]] = playertosign(player)
+        basic = basicai(tiles,player)
+        tiles[basic[0]][basic[1]] = playertosign(player)
         return True
     except:
-        try:
-            lose = ailose(tiles)
-            tiles[lose[0]][lose[1]] = playertosign(player)
+        random = airandom(tiles)
+        tiles[random[0]][random[1]] = playertosign(player)
+        return True
+
+def aihardturn(player,tiles,turn):
+    time.sleep(1)
+    try:
+        basic = basicai(tiles,player)
+        tiles[basic[0]][basic[1]] = playertosign(player)
+        return True
+    except:
+        if turn == 0:
+            start = aihardstart(tiles)
+            tiles[start[0]][start[1]] = playertosign(player)
             return True
-        except:
+        elif turn == 1:
+            sec = aihardsec(tiles)
+            tiles[sec[0]][sec[1]] = playertosign(player)
+            return True
+        elif turn > 1:
             random = airandom(tiles)
             tiles[random[0]][random[1]] = playertosign(player)
             return True
-
 
 def playertosign(player):
     if player == 0:
         return "O"
     return "X"
 
-
 def showinterface():
+    os.system("clear")
     print("┏━━━1━━━┳━━━2━━━┳━━━3━━━┓")
     print("┃       ┃       ┃       ┃ ")
     print("1   " + str(tiles[0][0]) + "   ┃   "
